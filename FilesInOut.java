@@ -14,6 +14,13 @@ import java.lang.Number;
 public class FilesInOut {
 
     public static void main(String[] args){
+    	boolean uppercasemode = false;
+    	for (String x : args) {
+			if (x.equals("-u")) {
+				uppercasemode = true;
+			}
+		}
+    	
         // Replace this with statements to set the file name (input) and file name (output).
         // Initially it will be easier to hardcode suitable file names.
     	File file = new File(".\\src\\input.txt");
@@ -41,7 +48,11 @@ public class FilesInOut {
     			if (x.matches("\\d.*")) {
     				date = x.substring(0,2) + "/" + x.substring(2,4) + "/" + x.substring(4);
     			} else {
-    				x = x.substring(0,1).toUpperCase() + x.substring(1);
+    				if (uppercasemode) {
+    					x = x.toUpperCase();
+    				} else {
+    					x = x.substring(0,1).toUpperCase() + x.substring(1);
+    				}
     				finals = finals + x + " ";
     			}
     		}
