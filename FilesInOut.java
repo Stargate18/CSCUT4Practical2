@@ -2,6 +2,7 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+
 import javax.swing.*;
 import java.lang.Number;
 
@@ -31,8 +32,21 @@ public class FilesInOut {
 		}
     	while (in.hasNextLine())
     	{
-    	  inputnames.add(in.nextLine());
-    	  System.out.println(inputnames.get(inputnames.size() - 1));
+    		String received = in.nextLine();
+    		inputnames.add(received);
+    		String[] splitname = received.split(" ");
+    		String finals = "";
+    		String date = "";
+    		for (String x : splitname) {
+    			if (x.matches("\\d.*")) {
+    				date = x.substring(0,2) + "/" + x.substring(2,4) + "/" + x.substring(4);
+    			} else {
+    				x = x.substring(0,1).toUpperCase() + x.substring(1);
+    				finals = finals + x + " ";
+    			}
+    		}
+    		finals = String.format("%-30s%s", finals, date);
+    		System.out.println(finals);
     	}
     	
     	
