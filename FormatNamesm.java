@@ -15,9 +15,13 @@ public class FormatNamesm {
 
 	public static void main(String[] args) {
 		boolean uppercasemode = false;
+		boolean htmlmode = true;
 		for (String x : args) {
 			if (x.equals("-u")) {
 				uppercasemode = true;
+			}
+			if (x.equals("-h")) {
+				htmlmode = true;
 			}
 		}
 		String inputFileName;
@@ -27,37 +31,53 @@ public class FormatNamesm {
 		Scanner in = new Scanner(System.in);
 		Scanner inFile = null;
 		System.out.println("supply filename for input:");
-		try {
-			inputFileName = in.nextLine();
-			inputFile = new File(inputFileName);
-			inFile = new Scanner(inputFile);
-		} catch (IOException e) {
-			System.err.println("IOException: " + e.getMessage() + "not found");
+		while(true) {
+			try {
+				inputFileName = in.nextLine();
+				inputFile = new File(inputFileName);
+				inFile = new Scanner(inputFile);
+				break;
+			} catch (IOException e) {
+				System.err.println("IOException: " + e.getMessage() + "not found");
+			}
 		}
 		System.out.println("supply filename for output:");
-		try {
-			outputFileName = in.nextLine();
-			output = new PrintWriter(outputFileName);
-		} catch (FileNotFoundException e) {
-			System.err.println("FileNotFoundException: " + e.getMessage() + " not openable");
-			System.exit(0);
+		while(true) {
+			try {
+				outputFileName = in.nextLine();
+				if (!outputFileName.contains(".")) {
+					if (htmlmode) {
+						outputFileName = outputFileName + ".html";
+					} else {
+						outputFileName = outputFileName + ".txt";
+					}
+				}
+				output = new PrintWriter(outputFileName);
+				break;
+			} catch (FileNotFoundException e) {
+				System.err.println("FileNotFoundException: " + e.getMessage() + " not openable");
+				System.exit(0);
+			}
 		}
-
+		if (htmlmode) {
+			output.println("<html><head><title> Output </title></head><body><table><tr><th>Name</th><th>Date</th></tr>");
+		}
 		ArrayList<String> inputnames = new ArrayList<String>();
-		System.out.println("init check");
 		while (inFile.hasNextLine()) {
-			System.out.println("first line scanned");
 			String received = inFile.nextLine();
 			inputnames.add(received);
-			System.out.println(received);
 			String[] splitname = received.split(" ");
-			System.out.println(splitname);
 			String finals = "";
 			String date = "";
+			if (htmlmode) {
+				output.print("<tr><td>");
+			}
 			for (String x : splitname) {
-				System.out.println(x);
 				if (x.matches("\\d.*")) {
 					date = x.substring(0, 2) + "/" + x.substring(2, 4) + "/" + x.substring(4);
+					if (htmlmode) {
+						date = "</td><td>" + date + "</td>";
+					}
 				} else {
 					if (x.length() == 1) {
 						x = x.toUpperCase() + ".";
@@ -69,13 +89,12 @@ public class FormatNamesm {
 					finals = finals + x + " ";
 				}
 			}
-			System.out.println("all gotten");
 			finals = String.format("%-30s%s", finals, date);
-			System.out.println("formatted");
 			output.println(finals);
-			System.out.println("done!");
 		}
-
+		if (htmlmode) {
+			output.print("</body>");
+		}
 		output.close();
 
 	} // main
