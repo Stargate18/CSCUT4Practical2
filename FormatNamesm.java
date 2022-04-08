@@ -7,13 +7,16 @@ import javax.swing.*;
 import java.lang.Number;
 
 /**
-* Recieves from the user a file of unformatted names, and returns them ina formatted state, either as tabbed taext or an HTML table.
-*
-* @param  args the command line arguments.
-* @param  name the location of the image, relative to the url argument
-* @return      the image at the specified URL
-* @see         Image
-*/
+ * Recieves from the user a file of unformatted names, and returns them ina
+ * formatted state, either as tabbed taext or an HTML table.
+ *
+ * @param args the command line arguments.
+ * @param -u   - upper case mode. If present, all output will be in upper case,
+ *             instead of title case.
+ * @param -h   - HTML mode. If present, output will be in the form of an HTML
+ *             document, containing the results in a table. In addition the
+ *             default file extension becomes ".html".
+ */
 public class FormatNamesm {
 
 	public static void main(String[] args) {
